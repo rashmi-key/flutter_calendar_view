@@ -5,6 +5,8 @@
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
+
 class Constants {
   Constants._();
 
@@ -22,6 +24,8 @@ class Constants {
   static const Color white = Color(0xffffffff);
   static const Color offWhite = Color(0xfff0f0f0);
   static const Color headerBackground = Color(0xFFDCF0FF);
+
+  static const Color transparent= Colors.transparent;
 
   static Color get randomColor {
     return Color.fromRGBO(_random.nextInt(_maxColor),

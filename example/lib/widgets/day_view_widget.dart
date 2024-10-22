@@ -3,21 +3,31 @@ import 'package:flutter/material.dart';
 
 import '../pages/event_details_page.dart';
 
-class DayViewWidget extends StatelessWidget {
+class DayViewWidget extends StatefulWidget {
   final GlobalKey<DayViewState>? state;
   final double? width;
+  Function? calendarValue;
+  String? selectedTimeZone;
+  String? selectedCalendarView;
 
-  const DayViewWidget({
-    super.key,
-    this.state,
-    this.width,
-  });
+  DayViewWidget(
+      {super.key,
+      this.state,
+      this.width,
+      this.calendarValue,
+      this.selectedTimeZone,
+      this.selectedCalendarView});
 
+  @override
+  State<DayViewWidget> createState() => _DayViewWidgetState();
+}
+
+class _DayViewWidgetState extends State<DayViewWidget> {
   @override
   Widget build(BuildContext context) {
     return DayView(
-      key: state,
-      width: width,
+      key: widget.state,
+      width: widget.width,
       startDuration: Duration(hours: 8),
       showHalfHours: true,
       heightPerMinute: 3,
@@ -51,6 +61,11 @@ class DayViewWidget extends StatelessWidget {
         showTime: true,
         showTimeBackgroundView: true,
       ),
+      selectedTimeZone: widget.selectedTimeZone??"",
+      selectedCalendarView: widget.selectedCalendarView??"",
+      calendarValue: (value) {
+        widget.calendarValue!(value);
+      },
     );
   }
 

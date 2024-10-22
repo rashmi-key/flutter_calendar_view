@@ -4,6 +4,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../calendar_event_data.dart';
 import '../constants.dart';
@@ -117,32 +118,47 @@ class RoundedEventTile extends StatelessWidget {
 /// A header widget to display on day view.
 class DayPageHeader extends CalendarPageHeader {
   /// A header widget to display on day view.
-  const DayPageHeader({
-    Key? key,
-    VoidCallback? onNextDay,
-    AsyncCallback? onTitleTapped,
-    VoidCallback? onPreviousDay,
-    Color iconColor = Constants.black,
-    Color backgroundColor = Constants.headerBackground,
-    StringProvider? dateStringBuilder,
-    required DateTime date,
-    HeaderStyle headerStyle = const HeaderStyle(),
-  }) : super(
-          key: key,
-          date: date,
-          // ignore_for_file: deprecated_member_use_from_same_package
-          backgroundColor: backgroundColor,
-          iconColor: iconColor,
-          onNextDay: onNextDay,
-          onPreviousDay: onPreviousDay,
-          onTitleTapped: onTitleTapped,
-          dateStringBuilder:
-              dateStringBuilder ?? DayPageHeader._dayStringBuilder,
-          headerStyle: headerStyle,
-        );
+   DayPageHeader(
+      {Key? key,
+      VoidCallback? onNextDay,
+      AsyncCallback? onTitleTapped,
+      VoidCallback? onPreviousDay,
+      Color iconColor = Constants.black,
+      Color backgroundColor = Constants.transparent,
+      StringProvider? dateStringBuilder,
+      required DateTime date,
+      HeaderStyle headerStyle = const HeaderStyle(),
+      required VoidCallback? timeZoneValue,
+      required String selectedTimeZone,
+        required  String selectedCalendarView,
+      required Function calendarValue})
+      : super(
+            key: key,
+            date: date,
+            // ignore_for_file: deprecated_member_use_from_same_package
+            backgroundColor: backgroundColor,
+            iconColor: iconColor,
+            onNextDay: onNextDay,
+            onPreviousDay: onPreviousDay,
+            onTitleTapped: onTitleTapped,
+            dateStringBuilder:
+                dateStringBuilder ?? DayPageHeader._dayStringBuilder,
+            headerStyle: headerStyle,
+            timeZoneValue: timeZoneValue,
+            selectedTimeZone: selectedTimeZone,
+            selectedCalendarView: selectedCalendarView,
+            calendarValue: calendarValue);
 
-  static String _dayStringBuilder(DateTime date, {DateTime? secondaryDate}) =>
-      "${date.day} - ${date.month} - ${date.year}";
+  static String _dayStringBuilder(DateTime date, {DateTime? secondaryDate}) {
+   // DateTime now = DateTime.now();
+
+    // Define the format you want (e.g., "MMM yyyy" for Oct 2024)
+    DateFormat formatter = DateFormat('dd MMM yyyy');
+
+    // Format the date
+    return formatter.format(date);
+  }
+    /*  "${date.day} - ${date.month} - ${date.year}";*/
 }
 
 class DefaultTimeLineMark extends StatelessWidget {

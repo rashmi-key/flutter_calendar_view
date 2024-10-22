@@ -229,10 +229,20 @@ class DayView<T extends Object?> extends StatefulWidget {
   /// Flag to keep scrollOffset of pages on page change
   final bool keepScrollOffset;
 
+  final VoidCallback? timeZoneValue;
+  final String selectedTimeZone;
+
+  final String selectedCalendarView;
+   Function calendarValue;
+
   /// Main widget for day view.
-  const DayView({
+   DayView({
     Key? key,
     this.eventTileBuilder,
+    this.timeZoneValue,
+   required this.selectedTimeZone,
+    required this.selectedCalendarView,
+    required this.calendarValue,
     this.dateStringBuilder,
     this.timeStringBuilder,
     this.controller,
@@ -702,6 +712,10 @@ class DayViewState<T extends Object?> extends State<DayView<T>> {
         }
       },
       headerStyle: widget.headerStyle,
+      timeZoneValue: widget.timeZoneValue,
+      selectedTimeZone:widget.selectedTimeZone,
+      selectedCalendarView: widget.selectedCalendarView??"",
+      calendarValue: widget.calendarValue,//() { },
     );
   }
 

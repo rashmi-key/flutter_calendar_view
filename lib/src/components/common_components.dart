@@ -13,10 +13,17 @@ import '../typedefs.dart';
 import '../enumerations.dart';
 import 'components.dart';
 
-class CalendarPageHeader extends StatelessWidget {
+class CalendarPageHeader extends StatefulWidget {
   /// When user taps on right arrow.
   final VoidCallback? onNextDay;
 
+  ///When user taps on timezone
+  final VoidCallback? timeZoneValue;
+  final String selectedTimeZone;
+
+   String? selectedCalendarView;
+ // final VoidCallback? calendarValue;
+   Function calendarValue;
   /// When user taps on left arrow.
   final VoidCallback? onPreviousDay;
 
@@ -49,77 +56,144 @@ class CalendarPageHeader extends StatelessWidget {
 
   /// Common header for month and day view In this header user can define format
   /// in which date will be displayed by providing [dateStringBuilder] function.
-  const CalendarPageHeader({
+   CalendarPageHeader({
     Key? key,
     required this.date,
     required this.dateStringBuilder,
     this.onNextDay,
+    required this.selectedTimeZone,
+    required this.selectedCalendarView,
+    required this.calendarValue,
+    this.timeZoneValue,
     this.onTitleTapped,
     this.onPreviousDay,
     this.secondaryDate,
     @Deprecated("Use Header Style to provide background")
-    this.backgroundColor = Constants.headerBackground,
+    this.backgroundColor = Constants.transparent,
     @Deprecated("Use Header Style to provide icon color")
     this.iconColor = Constants.black,
     this.headerStyle = const HeaderStyle(),
   }) : super(key: key);
 
   @override
+  State<CalendarPageHeader> createState() => _CalendarPageHeaderState();
+}
+
+class _CalendarPageHeaderState extends State<CalendarPageHeader> {
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: headerStyle.headerMargin,
-      padding: headerStyle.headerPadding,
+      margin: widget.headerStyle.headerMargin,
+      padding: widget.headerStyle.headerPadding,
       decoration:
           // ignore_for_file: deprecated_member_use_from_same_package
-          headerStyle.decoration ?? BoxDecoration(color: backgroundColor),
+          widget.headerStyle.decoration ?? BoxDecoration(color: widget.backgroundColor),
       clipBehavior: Clip.antiAlias,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          if (headerStyle.leftIconVisible)
+          if (widget.headerStyle.leftIconVisible)
             IconButton(
-              onPressed: onPreviousDay,
+              onPressed: widget.onPreviousDay,
               splashColor: Colors.transparent,
               focusColor: Colors.transparent,
               hoverColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              padding: headerStyle.leftIconPadding,
-              icon: headerStyle.leftIcon ??
+              padding: widget.headerStyle.leftIconPadding,
+              icon: widget.headerStyle.leftIcon ??
                   Icon(
                     Icons.chevron_left,
                     size: 30,
-                    color: iconColor,
+                    color: Color(0xFF808080),
                   ),
             ),
-          Expanded(
-            child: InkWell(
-              onTap: onTitleTapped,
-              child: Text(
-                dateStringBuilder(date, secondaryDate: secondaryDate),
-                textAlign: headerStyle.titleAlign,
-                style: headerStyle.headerTextStyle,
-              ),
+          InkWell(
+            onTap: widget.onTitleTapped,
+            child: Text(
+              widget.dateStringBuilder(widget.date, secondaryDate: widget.secondaryDate),
+              textAlign: widget.headerStyle.titleAlign,
+              style: widget.headerStyle.headerTextStyle,
             ),
           ),
-          if (headerStyle.rightIconVisible)
+          if (widget.headerStyle.rightIconVisible)
             IconButton(
-              onPressed: onNextDay,
+              onPressed: widget.onNextDay,
               splashColor: Colors.transparent,
               focusColor: Colors.transparent,
               hoverColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              padding: headerStyle.rightIconPadding,
-              icon: headerStyle.rightIcon ??
+              padding: widget.headerStyle.rightIconPadding,
+              icon: widget.headerStyle.rightIcon ??
                   Icon(
                     Icons.chevron_right,
                     size: 30,
-                    color: iconColor,
+                    color: Color(0xFF808080),
                   ),
             ),
+          TextButton.icon(
+            label: Text(widget.selectedTimeZone,style: TextStyle(color: Color(0xFF808080)),),
+            onPressed: widget.timeZoneValue,
+
+            iconAlignment: IconAlignment.end,
+            icon: widget.headerStyle.rightIcon ??
+                Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  size: 30,
+                  color: Color(0xFF808080),
+                ),
+          ),
+          PopupMenuButton<String>(
+            offset: Offset(0, -90),
+            onSelected: (value) {
+              if(mounted)
+                {
+                  setState(() {
+                    widget.selectedCalendarView = value;
+                    widget.calendarValue(value);
+                  });
+                }
+            },
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry<String>>[
+                if(widget.selectedCalendarView!="Day")
+                 PopupMenuItem<String>(
+                  value: 'Day',
+                  child: Text('Day'),
+                ),
+                if(widget.selectedCalendarView!="Weekly")
+
+                  PopupMenuItem<String>(
+                  value: 'Weekly',
+                  child: Text('Weekly'),
+                ),
+                if(widget.selectedCalendarView!="Monthly")
+
+                  PopupMenuItem<String>(
+                  value: 'Monthly',
+                  child: Text('Monthly'),
+                ),
+              ];
+            },
+            child: /* ElevatedButton(
+              onPressed: null,
+              child: Text('Day'),
+            )*/
+                TextButton.icon(
+                    label: Text(widget.selectedCalendarView??"",style: TextStyle(color: Color(0xFF808080)),),
+                    onPressed: null,//calendarValue,
+                    iconAlignment: IconAlignment.end,
+                    icon: widget.headerStyle.rightIcon ??
+                        Icon(
+                          Icons.keyboard_arrow_down_rounded,
+                          size: 30,
+                          color: Color(0xFF808080),
+                        )),
+          ),
         ],
       ),
     );
   }
+
 }
 
 /// This will be used in day and week view

@@ -170,42 +170,52 @@ class MonthView<T extends Object?> extends StatefulWidget {
   /// defines that show and hide cell not is in current month
   final bool hideDaysNotInMonth;
 
+  final VoidCallback? timeZoneValue;
+  final String selectedTimeZone;
+
+  final String selectedCalendarView;
+  Function calendarValue;
+
   /// Main [Widget] to display month view.
-  const MonthView({
-    Key? key,
-    this.showBorder = true,
-    this.borderColor = Constants.defaultBorderColor,
-    this.cellBuilder,
-    this.minMonth,
-    this.maxMonth,
-    this.controller,
-    this.initialMonth,
-    this.borderSize = 1,
-    this.useAvailableVerticalSpace = false,
-    this.cellAspectRatio = 0.55,
-    this.headerBuilder,
-    this.weekDayBuilder,
-    this.pageTransitionDuration = const Duration(milliseconds: 300),
-    this.pageTransitionCurve = Curves.ease,
-    this.width,
-    this.onPageChange,
-    this.onCellTap,
-    this.onEventTap,
-    this.onEventLongTap,
-    this.onDateLongPress,
-    this.startDay = WeekDays.monday,
-    this.headerStringBuilder,
-    this.dateStringBuilder,
-    this.weekDayStringBuilder,
-    this.headerStyle = const HeaderStyle(),
-    this.safeAreaOption = const SafeAreaOption(),
-    this.onHeaderTitleTap,
-    this.pagePhysics = const ClampingScrollPhysics(),
-    this.pageViewPhysics,
-    this.onEventDoubleTap,
-    this.showWeekTileBorder = true,
-    this.hideDaysNotInMonth = false,
-  })  : assert(!(onHeaderTitleTap != null && headerBuilder != null),
+  MonthView(
+      {Key? key,
+      this.showBorder = true,
+      this.borderColor = Constants.defaultBorderColor,
+      this.cellBuilder,
+      this.minMonth,
+      this.maxMonth,
+      this.controller,
+      this.initialMonth,
+      this.borderSize = 1,
+      this.useAvailableVerticalSpace = false,
+      this.cellAspectRatio = 0.55,
+      this.headerBuilder,
+      this.weekDayBuilder,
+      this.pageTransitionDuration = const Duration(milliseconds: 300),
+      this.pageTransitionCurve = Curves.ease,
+      this.width,
+      this.onPageChange,
+      this.onCellTap,
+      this.onEventTap,
+      this.onEventLongTap,
+      this.onDateLongPress,
+      this.startDay = WeekDays.monday,
+      this.headerStringBuilder,
+      this.dateStringBuilder,
+      this.weekDayStringBuilder,
+      this.headerStyle = const HeaderStyle(),
+      this.safeAreaOption = const SafeAreaOption(),
+      this.onHeaderTitleTap,
+      this.pagePhysics = const ClampingScrollPhysics(),
+      this.pageViewPhysics,
+      this.onEventDoubleTap,
+      this.showWeekTileBorder = true,
+      this.hideDaysNotInMonth = false,
+      this.timeZoneValue,
+      required this.selectedTimeZone,
+      required this.selectedCalendarView,
+      required this.calendarValue})
+      : assert(!(onHeaderTitleTap != null && headerBuilder != null),
             "can't use [onHeaderTitleTap] & [headerBuilder] simultaneously"),
         super(key: key);
 
@@ -328,7 +338,7 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: _width,
+              // width: _width,
               child: _headerBuilder(_currentDate),
             ),
             Expanded(
@@ -525,6 +535,10 @@ class MonthViewState<T extends Object?> extends State<MonthView<T>> {
       dateStringBuilder: widget.headerStringBuilder,
       onNextMonth: nextPage,
       headerStyle: widget.headerStyle,
+      timeZoneValue: widget.timeZoneValue,
+      selectedTimeZone: widget.selectedTimeZone,
+      selectedCalendarView: widget.selectedCalendarView,
+      calendarValue: widget.calendarValue,
     );
   }
 

@@ -4,6 +4,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../calendar_event_data.dart';
 import '../constants.dart';
@@ -212,32 +213,48 @@ class FilledCell<T extends Object?> extends StatelessWidget {
 
 class MonthPageHeader extends CalendarPageHeader {
   /// A header widget to display on month view.
-  const MonthPageHeader({
-    Key? key,
-    VoidCallback? onNextMonth,
-    AsyncCallback? onTitleTapped,
-    VoidCallback? onPreviousMonth,
-    Color iconColor = Constants.black,
-    Color backgroundColor = Constants.headerBackground,
-    StringProvider? dateStringBuilder,
-    required DateTime date,
-    HeaderStyle headerStyle = const HeaderStyle(),
-  }) : super(
-          key: key,
-          date: date,
-          onNextDay: onNextMonth,
-          onPreviousDay: onPreviousMonth,
-          onTitleTapped: onTitleTapped,
-          // ignore_for_file: deprecated_member_use_from_same_package
-          backgroundColor: backgroundColor,
-          iconColor: iconColor,
-          dateStringBuilder:
-              dateStringBuilder ?? MonthPageHeader._monthStringBuilder,
-          headerStyle: headerStyle,
-        );
+   MonthPageHeader(
+      {Key? key,
+      VoidCallback? onNextMonth,
+      AsyncCallback? onTitleTapped,
+      VoidCallback? onPreviousMonth,
+      Color iconColor = Constants.black,
+      Color backgroundColor = Constants.transparent,
+      StringProvider? dateStringBuilder,
+      required DateTime date,
+      HeaderStyle headerStyle = const HeaderStyle(),
+      required VoidCallback? timeZoneValue,
+      required String selectedTimeZone,
+      required String selectedCalendarView,
+      required Function calendarValue})
+      : super(
+            key: key,
+            date: date,
+            onNextDay: onNextMonth,
+            onPreviousDay: onPreviousMonth,
+            onTitleTapped: onTitleTapped,
+            // ignore_for_file: deprecated_member_use_from_same_package
+            backgroundColor: backgroundColor,
+            iconColor: iconColor,
+            dateStringBuilder:
+                dateStringBuilder ?? MonthPageHeader._monthStringBuilder,
+            headerStyle: headerStyle,
+            timeZoneValue: timeZoneValue,
+            selectedTimeZone: selectedTimeZone,
+            selectedCalendarView: selectedCalendarView,
+            calendarValue: calendarValue);
 
-  static String _monthStringBuilder(DateTime date, {DateTime? secondaryDate}) =>
-      "${date.month} - ${date.year}";
+  static String _monthStringBuilder(DateTime date, {DateTime? secondaryDate}) {
+    //DateTime now = DateTime.now();
+
+    // Define the format you want (e.g., "MMM yyyy" for Oct 2024)
+    DateFormat formatter = DateFormat('MMM yyyy');
+
+    // Format the date
+    return formatter.format(date);
+
+  }
+     // "${date.month} - ${date.year}";
 }
 
 class WeekDayTile extends StatelessWidget {

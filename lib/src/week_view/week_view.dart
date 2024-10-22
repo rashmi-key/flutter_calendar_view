@@ -240,8 +240,14 @@ class WeekView<T extends Object?> extends StatefulWidget {
   /// Flag to keep scrollOffset of pages on page change
   final bool keepScrollOffset;
 
+  final VoidCallback? timeZoneValue;
+  final String selectedTimeZone;
+
+  final String selectedCalendarView;
+   Function calendarValue;
+
   /// Main widget for week view.
-  const WeekView({
+   WeekView({
     Key? key,
     this.controller,
     this.eventTileBuilder,
@@ -298,6 +304,11 @@ class WeekView<T extends Object?> extends StatefulWidget {
     this.fullDayHeaderTitle = '',
     this.fullDayHeaderTextConfig,
     this.keepScrollOffset = false,
+    this.timeZoneValue,
+    required this.selectedTimeZone,
+    required this.selectedCalendarView,
+    required this.calendarValue,
+
   })  : assert(!(onHeaderTitleTap != null && weekPageHeaderBuilder != null),
             "can't use [onHeaderTitleTap] & [weekPageHeaderBuilder] simultaneously"),
         assert((timeLineOffset) >= 0,
@@ -830,6 +841,10 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
       },
       headerStringBuilder: widget.headerStringBuilder,
       headerStyle: widget.headerStyle,
+      timeZoneValue: widget.timeZoneValue,
+        selectedTimeZone:widget.selectedTimeZone,
+        selectedCalendarView:widget.selectedCalendarView,
+        calendarValue:widget.calendarValue
     );
   }
 
