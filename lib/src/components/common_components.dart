@@ -108,11 +108,13 @@ class _CalendarPageHeaderState extends State<CalendarPageHeader> {
                   ),
             ),
           InkWell(
-            onTap: widget.onTitleTapped,
+            onTap: null,//widget.onTitleTapped,
             child: Text(
               widget.dateStringBuilder(widget.date, secondaryDate: widget.secondaryDate),
               textAlign: widget.headerStyle.titleAlign,
-              style: widget.headerStyle.headerTextStyle,
+              style: TextStyle(color: Color( 0xFF252525,),
+                fontWeight: FontWeight.w300
+              )//widget.headerStyle.headerTextStyle,
             ),
           ),
           if (widget.headerStyle.rightIconVisible)
