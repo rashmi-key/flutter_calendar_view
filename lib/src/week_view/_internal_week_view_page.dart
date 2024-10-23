@@ -336,7 +336,7 @@ class _InternalWeekViewPageState<T extends Object?>
           ),
           Expanded(
             child: SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
+            //  physics: NeverScrollableScrollPhysics(),
               controller: widget.keepScrollOffset
                   ? scrollController
                   : widget.weekViewScrollController,
