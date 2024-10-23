@@ -766,7 +766,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(widget.weekDayStringBuilder?.call(date.weekday - 1) ??
-              Constants.weekTitles[date.weekday - 1]),
+              Constants.weekTitles[date.weekday - 1],style: TextStyle(color: Colors.black),),
           Text(widget.weekDayDateStringBuilder?.call(date.day) ??
               date.day.toString()),
         ],
