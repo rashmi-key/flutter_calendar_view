@@ -265,11 +265,14 @@ class _InternalWeekViewPageState<T extends Object?>
                 ),
                 ...List.generate(
                   filteredDates.length,
-                  (index) => SizedBox(
-                    height: widget.weekTitleHeight,
-                    width: widget.weekTitleWidth,
-                    child: widget.weekDayBuilder(
-                      filteredDates[index],
+                  (index) => Container(
+                    color:Colors.red,
+                    child: SizedBox(
+                      height: widget.weekTitleHeight,
+                      width: widget.weekTitleWidth,
+                      child: widget.weekDayBuilder(
+                        filteredDates[index],
+                      ),
                     ),
                   ),
                 )
@@ -336,6 +339,7 @@ class _InternalWeekViewPageState<T extends Object?>
           ),
           Expanded(
             child: SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
               controller: widget.keepScrollOffset
                   ? scrollController
                   : widget.weekViewScrollController,
