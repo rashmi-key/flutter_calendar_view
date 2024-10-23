@@ -21,9 +21,11 @@ class CalendarPageHeader extends StatefulWidget {
   final VoidCallback? timeZoneValue;
   final String selectedTimeZone;
 
-   String? selectedCalendarView;
- // final VoidCallback? calendarValue;
-   Function calendarValue;
+  String? selectedCalendarView;
+
+  // final VoidCallback? calendarValue;
+  Function calendarValue;
+
   /// When user taps on left arrow.
   final VoidCallback? onPreviousDay;
 
@@ -56,7 +58,7 @@ class CalendarPageHeader extends StatefulWidget {
 
   /// Common header for month and day view In this header user can define format
   /// in which date will be displayed by providing [dateStringBuilder] function.
-   CalendarPageHeader({
+  CalendarPageHeader({
     Key? key,
     required this.date,
     required this.dateStringBuilder,
@@ -80,6 +82,8 @@ class CalendarPageHeader extends StatefulWidget {
 }
 
 class _CalendarPageHeaderState extends State<CalendarPageHeader> {
+  final GlobalKey _menuKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -87,7 +91,8 @@ class _CalendarPageHeaderState extends State<CalendarPageHeader> {
       padding: widget.headerStyle.headerPadding,
       decoration:
           // ignore_for_file: deprecated_member_use_from_same_package
-          widget.headerStyle.decoration ?? BoxDecoration(color: widget.backgroundColor),
+          widget.headerStyle.decoration ??
+              BoxDecoration(color: widget.backgroundColor),
       clipBehavior: Clip.antiAlias,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -108,14 +113,18 @@ class _CalendarPageHeaderState extends State<CalendarPageHeader> {
                   ),
             ),
           InkWell(
-            onTap: null,//widget.onTitleTapped,
+            onTap: null, //widget.onTitleTapped,
             child: Text(
-              widget.dateStringBuilder(widget.date, secondaryDate: widget.secondaryDate),
-              textAlign: widget.headerStyle.titleAlign,
-              style: TextStyle(color: Color( 0xFF252525,),
-                fontWeight: FontWeight.w300
-              )//widget.headerStyle.headerTextStyle,
-            ),
+                widget.dateStringBuilder(widget.date,
+                    secondaryDate: widget.secondaryDate),
+                textAlign: widget.headerStyle.titleAlign,
+                style: TextStyle(
+                    color: Color(
+                      0xFF252525,
+                    ),
+                    fontWeight:
+                        FontWeight.w300) //widget.headerStyle.headerTextStyle,
+                ),
           ),
           if (widget.headerStyle.rightIconVisible)
             IconButton(
@@ -133,9 +142,11 @@ class _CalendarPageHeaderState extends State<CalendarPageHeader> {
                   ),
             ),
           TextButton.icon(
-            label: Text(widget.selectedTimeZone,style: TextStyle(color: Color(0xFF808080)),),
+            label: Text(
+              widget.selectedTimeZone,
+              style: TextStyle(color: Color(0xFF808080)),
+            ),
             onPressed: widget.timeZoneValue,
-
             iconAlignment: IconAlignment.end,
             icon: widget.headerStyle.rightIcon ??
                 Icon(
@@ -144,58 +155,74 @@ class _CalendarPageHeaderState extends State<CalendarPageHeader> {
                   color: Color(0xFF808080),
                 ),
           ),
-          PopupMenuButton<String>(
-            offset: Offset(0, -90),
-            onSelected: (value) {
-              if(mounted)
-                {
-                  setState(() {
-                    widget.selectedCalendarView = value;
-                    widget.calendarValue(value);
-                  });
-                }
-            },
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuEntry<String>>[
-                if(widget.selectedCalendarView!="Day")
-                 PopupMenuItem<String>(
-                  value: 'Day',
-                  child: Text('Day'),
-                ),
-                if(widget.selectedCalendarView!="Weekly")
+          TextButton.icon(
+              key: _menuKey,
+              label: Text(
+                widget.selectedCalendarView ?? "",
+                style: TextStyle(color: Color(0xFF808080)),
+              ),
+              onPressed: (() {
+                final RenderBox renderBox =
+                    _menuKey.currentContext!.findRenderObject() as RenderBox;
+                final offset = renderBox.localToGlobal(Offset.zero);
 
-                  PopupMenuItem<String>(
-                  value: 'Weekly',
-                  child: Text('Weekly'),
-                ),
-                if(widget.selectedCalendarView!="Monthly")
-
-                  PopupMenuItem<String>(
-                  value: 'Monthly',
-                  child: Text('Monthly'),
-                ),
-              ];
-            },
-            child: /* ElevatedButton(
-              onPressed: null,
-              child: Text('Day'),
-            )*/
-                TextButton.icon(
-                    label: Text(widget.selectedCalendarView??"",style: TextStyle(color: Color(0xFF808080)),),
-                    onPressed: null,//calendarValue,
-                    iconAlignment: IconAlignment.end,
-                    icon: widget.headerStyle.rightIcon ??
-                        Icon(
-                          Icons.keyboard_arrow_down_rounded,
-                          size: 30,
-                          color: Color(0xFF808080),
-                        )),
-          ),
+                showMenu(
+                  context: context,
+                  position: RelativeRect.fromLTRB(
+                    offset.dx,
+                    offset.dy + renderBox.size.height,
+                    offset.dx + renderBox.size.width,
+                    offset.dy + renderBox.size.height,
+                  ),
+                  items: [
+                    if (widget.selectedCalendarView != "Day")
+                      PopupMenuItem<String>(
+                        value: "Day",
+                        child: Text("Day"),
+                        onTap: (() {
+                          widget.selectedCalendarView = "Day";
+                          widget.selectedCalendarView = "Day";
+                          widget.calendarValue("Day");
+                          setState(() {});
+                        }),
+                      ),
+                    if (widget.selectedCalendarView != "Weekly")
+                      PopupMenuItem<String>(
+                        value: "Weekly",
+                        child: Text("Weekly"),
+                        onTap: (() {
+                          widget.selectedCalendarView = "Weekly";
+                          widget.selectedCalendarView = "Weekly";
+                          widget.calendarValue("Weekly");
+                          setState(() {});
+                        }),
+                      ),
+                    if (widget.selectedCalendarView != "Monthly")
+                      PopupMenuItem<String>(
+                        value: "Monthly",
+                        child: Text("Monthly"),
+                        onTap: (() {
+                          widget.selectedCalendarView = "Monthly";
+                          widget.selectedCalendarView = "Monthly";
+                          widget.calendarValue("Monthly");
+                          setState(() {});
+                        }),
+                      ),
+                  ],
+                );
+              }),
+              //calendarValue,
+              iconAlignment: IconAlignment.end,
+              icon: widget.headerStyle.rightIcon ??
+                  Icon(
+                    Icons.keyboard_arrow_down_rounded,
+                    size: 30,
+                    color: Color(0xFF808080),
+                  )),
         ],
       ),
     );
   }
-
 }
 
 /// This will be used in day and week view
