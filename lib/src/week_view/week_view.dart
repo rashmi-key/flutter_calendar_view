@@ -244,10 +244,10 @@ class WeekView<T extends Object?> extends StatefulWidget {
   final String selectedTimeZone;
 
   final String selectedCalendarView;
-   Function calendarValue;
+  Function calendarValue;
 
   /// Main widget for week view.
-   WeekView({
+  WeekView({
     Key? key,
     this.controller,
     this.eventTileBuilder,
@@ -308,7 +308,6 @@ class WeekView<T extends Object?> extends StatefulWidget {
     required this.selectedTimeZone,
     required this.selectedCalendarView,
     required this.calendarValue,
-
   })  : assert(!(onHeaderTitleTap != null && weekPageHeaderBuilder != null),
             "can't use [onHeaderTitleTap] & [weekPageHeaderBuilder] simultaneously"),
         assert((timeLineOffset) >= 0,
@@ -794,6 +793,7 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
   Widget _defaultTimeLineBuilder(DateTime date) => DefaultTimeLineMark(
         date: date,
         timeStringBuilder: widget.timeLineStringBuilder,
+        markingStyle: TextStyle(color: Colors.black),
       );
 
   /// Default timeline builder. This builder will be used if
@@ -818,34 +818,34 @@ class WeekViewState<T extends Object?> extends State<WeekView<T>> {
   Widget _defaultWeekPageHeaderBuilder(
     DateTime startDate,
     DateTime endDate,
+
   ) {
     return WeekPageHeader(
-      startDate: _currentStartDate,
-      endDate: _currentEndDate,
-      onNextDay: nextPage,
-      onPreviousDay: previousPage,
-      onTitleTapped: () async {
-        if (widget.onHeaderTitleTap != null) {
-          widget.onHeaderTitleTap!(startDate);
-        } else {
-          final selectedDate = await showDatePicker(
-            context: context,
-            initialDate: startDate,
-            firstDate: _minDate,
-            lastDate: _maxDate,
-          );
+        startDate: _currentStartDate,
+        endDate: _currentEndDate,
+        onNextDay: nextPage,
+        onPreviousDay: previousPage,
+        onTitleTapped: () async {
+          if (widget.onHeaderTitleTap != null) {
+            widget.onHeaderTitleTap!(startDate);
+          } else {
+            final selectedDate = await showDatePicker(
+              context: context,
+              initialDate: startDate,
+              firstDate: _minDate,
+              lastDate: _maxDate,
+            );
 
-          if (selectedDate == null) return;
-          jumpToWeek(selectedDate);
-        }
-      },
-      headerStringBuilder: widget.headerStringBuilder,
-      headerStyle: widget.headerStyle,
-      timeZoneValue: widget.timeZoneValue,
-        selectedTimeZone:widget.selectedTimeZone,
-        selectedCalendarView:widget.selectedCalendarView,
-        calendarValue:widget.calendarValue
-    );
+            if (selectedDate == null) return;
+            jumpToWeek(selectedDate);
+          }
+        },
+        headerStringBuilder: widget.headerStringBuilder,
+        headerStyle: widget.headerStyle,
+        timeZoneValue: widget.timeZoneValue,
+        selectedTimeZone: widget.selectedTimeZone,
+        selectedCalendarView: widget.selectedCalendarView,
+        calendarValue: widget.calendarValue);
   }
 
   HourLinePainter _defaultHourLinePainter(

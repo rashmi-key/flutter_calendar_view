@@ -221,7 +221,6 @@ class _InternalDayViewPageState<T extends Object?>
           Expanded(
             child: SingleChildScrollView(
               physics: NeverScrollableScrollPhysics(),
-
               controller: widget.keepScrollOffset
                   ? scrollController
                   : widget.dayViewScrollController,

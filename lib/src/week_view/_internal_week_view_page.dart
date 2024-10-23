@@ -265,14 +265,11 @@ class _InternalWeekViewPageState<T extends Object?>
                 ),
                 ...List.generate(
                   filteredDates.length,
-                  (index) => Container(
-                    color:Colors.red,
-                    child: SizedBox(
-                      height: widget.weekTitleHeight,
-                      width: widget.weekTitleWidth,
-                      child: widget.weekDayBuilder(
-                        filteredDates[index],
-                      ),
+                  (index) => SizedBox(
+                    height: widget.weekTitleHeight,
+                    width: widget.weekTitleWidth,
+                    child: widget.weekDayBuilder(
+                      filteredDates[index],
                     ),
                   ),
                 )
